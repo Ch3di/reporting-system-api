@@ -4,21 +4,27 @@ import Fluent
 import FluentPostgresDriver
 
 final class Category: Model, Content {
+    static let schema = "categories"
+
     struct Public: Content {
         let id: UUID?
         let name: String
         let description: String?
     }
+
+    struct FieldKeys {
+        static var name: FieldKey { "name" }
+        static var description: FieldKey { "description" }
+    }
     
-    static let schema = "categories"
 
     @ID(key: .id)
     var id: UUID?
 
-    @Field(key: "name")
+    @Field(key: FieldKeys.name)
     var name: String
 
-    @Field(key: "description")
+    @Field(key: FieldKeys.description)
     var description: String?
 
     @Siblings(through: ReportCategory.self, from: \.$category, to: \.$report)
