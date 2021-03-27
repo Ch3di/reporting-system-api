@@ -20,6 +20,7 @@ public func configure(_ app: Application) throws {
     app.migrations.add(AddCategories())
     app.migrations.add(CreateReport())
     app.migrations.add(CreateReportCategory())
+    try app.autoMigrate().wait()
 
     // register routes
     try routes(app)
