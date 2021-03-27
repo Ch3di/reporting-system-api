@@ -11,28 +11,38 @@ final class Report: Model, Content {
         let details: String?
     }
 
+    struct FieldKeys {
+        static var details: FieldKey { "details" }
+        static var reporter: FieldKey { "reporter_id" }
+        static var reported: FieldKey { "reported_id" }
+        static var createdAt: FieldKey { "created_at" }
+        static var updatedAt: FieldKey { "updated_at" }
+        static var deletedAt: FieldKey { "deleted_at" }
+    }
+
+
     @ID(key: .id)
     var id: UUID?
 
-    @Field(key: "details")
+    @Field(key: FieldKeys.details)
     var details: String?
 
-    @Parent(key: "reporter_id")
+    @Parent(key: FieldKeys.reporter)
     var reporter: User
 
-    @Parent(key: "reported_id")
+    @Parent(key: FieldKeys.reported)
     var reported: User
 
     @Siblings(through: ReportCategory.self, from: \.$report, to: \.$category)
     var categories: [Category]
 
-    @Timestamp(key: "created_at", on: .create)
+    @Timestamp(key: FieldKeys.createdAt, on: .create)
     var createdAt: Date?
 
-    @Timestamp(key: "updated_at", on: .update)
+    @Timestamp(key: FieldKeys.updatedAt, on: .update)
     var updatedAt: Date?
 
-    @Timestamp(key: "deleted_at", on: .delete)
+    @Timestamp(key: FieldKeys.deletedAt, on: .delete)
     var deletedAt: Date?
 
 
@@ -66,12 +76,6 @@ final class Report: Model, Content {
     }
 
     func asPublic() -> Public {
-        // var categoryIDs: [UUID?]? = []
-        // for category in self.categories {
-        //     categoryIDs?.append(category.id)
-        // }
-
         return Public(reportID: self.id, reporterID: self.$reporter.id, reportedID: self.$reported.id, details: self.details)
-
     }
 }

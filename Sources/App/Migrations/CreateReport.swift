@@ -2,18 +2,18 @@ import Fluent
 
 struct CreateReport: Migration {
     func prepare(on database: Database) -> EventLoopFuture<Void> {
-        return database.schema("reports")
+        return database.schema(Report.schema)
                 .id()
-                .field("details", .string)
-                .field("reporter_id", .uuid)
-                .field("reported_id", .uuid)
-                .field("created_at", .datetime)
-                .field("updated_at", .datetime)
-                .field("deleted_at", .datetime)
+                .field(Report.FieldKeys.details, .string)
+                .field(Report.FieldKeys.reporter, .uuid)
+                .field(Report.FieldKeys.reported, .uuid)
+                .field(Report.FieldKeys.createdAt, .datetime)
+                .field(Report.FieldKeys.updatedAt, .datetime)
+                .field(Report.FieldKeys.deletedAt, .datetime)
                 .create()
     }
 
     func revert(on database: Database) -> EventLoopFuture<Void> {
-        return database.schema("reports").delete()
+        return database.schema(Report.schema).delete()
     }
 }
