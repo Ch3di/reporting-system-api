@@ -1,7 +1,3 @@
-//
-// Created by chady on 1/21/21.
-//
-
 import Foundation
 import Vapor
 import Fluent
@@ -9,14 +5,18 @@ import FluentPostgresDriver
 
 final class ReportCategory: Model {
     static let schema: String = "reports_categories"
+    struct FieldKeys {
+        static var report: FieldKey { "report_id" }
+        static var category: FieldKey { "category_id" }
+    }
 
     @ID(key: .id)
     var id: UUID?
 
-    @Parent(key: "report_id")
+    @Parent(key: FieldKeys.report)
     var report: Report
 
-    @Parent(key: "category_id")
+    @Parent(key: FieldKeys.category)
     var category: Category
 
     init() {}
