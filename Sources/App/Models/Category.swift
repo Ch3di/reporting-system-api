@@ -4,6 +4,12 @@ import Fluent
 import FluentPostgresDriver
 
 final class Category: Model, Content {
+    struct Public: Content {
+        let id: UUID?
+        let name: String
+        let description: String?
+    }
+    
     static let schema = "categories"
 
     @ID(key: .id)
@@ -15,10 +21,13 @@ final class Category: Model, Content {
     @Field(key: "description")
     var description: String?
 
+    @Siblings(through: ReportCategory.self, from: \.$category, to: \.$report)
+    var report: [Report]
+
 
     init() { }
 
-    init(id: UUID?, name: String, description: String?) {
+    init(id: UUID? = nil, name: String, description: String? = nil) {
         self.id = id
         self.name = name
         self.description = description
@@ -30,5 +39,9 @@ final class Category: Model, Content {
 
     func setDescription(description: String) {
         self.description = description
+    }
+
+    func asPublic() -> Public {
+        return Public(id: self.id, name: self.name, description: self.description)
     }
 }
