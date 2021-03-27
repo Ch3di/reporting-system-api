@@ -18,6 +18,8 @@ public func configure(_ app: Application) throws {
     app.migrations.add(CreateUser())
     app.migrations.add(CreateCategory())
     app.migrations.add(AddCategories())
+    app.migrations.add(CreateReport())
+    app.migrations.add(CreateReportCategory())
 
     // register routes
     try routes(app)
