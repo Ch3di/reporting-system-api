@@ -4,18 +4,22 @@ import Fluent
 import FluentPostgresDriver
 
 final class User: Model, Content {
+    static let schema = "users"
+    
      struct Public: Content {
         let id: UUID?
         let name: String
     }
 
+    struct FieldKeys {
+        static var name: FieldKey { "name" }
+    }
 
-    static let schema = "users"
 
     @ID(key: .id)
     var id: UUID?
 
-    @Field(key: "name")
+    @Field(key: FieldKeys.name)
     var name: String
 
     @Children(for: \.$reporter)
